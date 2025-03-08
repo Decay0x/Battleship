@@ -19,6 +19,20 @@ class Ship {
     this.position = [x, y];
     this.orientation = orientation;
   }
+  getOccupiedCells() {
+    const cells = [];
+    const [x, y] = this.position;
+
+    for (let i = 0; i < this.length; i++) {
+      if (this.orientation === 'horizontal') {
+        cells.push([x + i, y]);
+      } else {
+        cells.push([x, y + i]);
+      }
+    }
+
+    return cells;
+  }
 }
 
 module.exports = Ship;

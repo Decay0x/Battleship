@@ -13,6 +13,18 @@ class Player {
   getTurn() {
     return this._turn;
   }
+  play() {
+    this.setTurn(!this.getTurn());
+  }
+  attack(opponent, x, y) {
+    if (this.getTurn()) {
+      const hit = opponent.gameboard.receiveAttack(x, y);
+      this.play();
+      opponent.play();
+      return { status: 'success', message: hit };
+    }
+    return { status: 'error', message: false };
+  }
 }
 
 module.exports = Player;

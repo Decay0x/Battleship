@@ -44,39 +44,25 @@ class Gameboard {
     }
   }
   receiveAttack(x, y) {
-    const shipAffected = this.ships.find(
-      (ship) => ship.position[0] === x && ship.position[1] === y
-    );
+    const shipAffected = this.ships.find((ship) => {
+      const occupiedCells = ship.getOccupiedCells();
+      return occupiedCells.some(([cellX, cellY]) => cellX === x && cellY === y);
+    });
     if (shipAffected) {
       shipAffected.hit();
       return true;
+    } else {
+      this.missedShots.push({ x, y });
+      return false;
     }
-    this.missedShots.push({ x, y });
   }
   shipsSunk() {
-    return this.ships.every((ship) => {
-      if (ship.position[2] === 'horizontal') {
-        return ship.hits >= ship.length;
-      } else {
-        return ship.hits >= ship.length;
-      }
-    });
+    return this.ships.every((ship) => ship.hits >= ship.length);
   }
   getBoardState() {
-    const boardState = [];
-    for (let i = 0; i < 10; i++) {
-      const row = [];
-      for (let j = 0; j < 10; j++) {
-        const ship = this.board[i][j];
-        if (ship) {
-          row.push(ship.name);
-        } else {
-          row.push(null);
-        }
-      }
-      boardState.push(row);
-    }
-    return boardState;
+    return this.board.map((row) =>
+      row.map((ship) => (ship ? ship.name : null))
+    );
   }
 }
 

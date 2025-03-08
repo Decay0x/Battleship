@@ -15,4 +15,11 @@ describe('Player', () => {
   test('Each player has its own gameboard', () => {
     expect(real.gameboard).not.toBe(computer.gameboard);
   });
+  test('When a player plays a round loses his turn', () => {
+    expect(real.getTurn()).toBe(false);
+    real.play();
+    expect(real.getTurn()).toBe(true);
+    real.play();
+    expect(real.getTurn()).toBe(false);
+  });
 });
